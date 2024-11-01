@@ -22,10 +22,17 @@ public class Book implements BookDecorator {
 
     String title;
     String author;
+    String category;
     double price;
+    boolean isFeatured;
 
-    // TODO: Implement description and price methods
+    @Override
+    public double getPrice() {
+        return price;
+    }
+
+    @Override
     public String getDescription() {
-        return title + " by " + author;
+        return title + " by " + author + " and category " + category;
     }
 }

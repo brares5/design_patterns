@@ -2,20 +2,32 @@ package org.example.structural.service;
 
 
 import org.example.structural.entity.Book;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
 public class LibraryFacade {
 
-    // TODO: Use BookService and other services to simplify the interaction with multiple subsystems
+    private final BookService bookService;
+
+    @Autowired
+    public LibraryFacade(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     public void addBook(Book book) {
-        // TODO: Add book to the library through service layer
+        bookService.addBook(book);
+    }
+
+    public List<Book> getBooksByCategory(String category) {
+        // Assuming BookService or BookRepository has a method for this
+        return bookService.findBooksByCategory(category);
     }
 
     public List<Book> getFeaturedBooks() {
-        // TODO: Return a list of featured books using the decorator pattern
-        return null;
+        // Retrieve and filter featured books (using decorators or service logic)
+        return bookService.getFeaturedBooks();
     }
+
 }
