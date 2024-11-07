@@ -1,7 +1,7 @@
 
-package org.example.handler;
+package org.example.service;
 
-import org.example.Order;
+import org.example.model.Order;
 
 public abstract class OrderValidationHandler {
     protected OrderValidationHandler next;

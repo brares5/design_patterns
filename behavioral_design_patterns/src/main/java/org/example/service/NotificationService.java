@@ -1,9 +1,13 @@
 
-package org.example.notification;
+package org.example.service;
+
+import org.example.notification.Observer;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class NotificationService {
     private List<Observer> observers = new ArrayList<>();
 
