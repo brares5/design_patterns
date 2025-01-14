@@ -3,6 +3,7 @@ package org.example.structural.controller;
 import io.swagger.annotations.ApiParam;
 import org.example.structural.dto.BookDto;
 import org.example.structural.entity.Book;
+import org.example.structural.service.BookDecorator;
 import org.example.structural.service.LibraryFacade;
 import org.example.structural.utils.BookMapper;
 import org.example.structural.service.BookService;
@@ -49,7 +50,7 @@ public class LibraryController {
         return BookMapper.toDTO(savedBook);
     }
 
-    @Operation(summary = "Update an existing book", description = "Updates an existing book by ID with new information from the BookDto object")
+    @Operation(summary = "Update an existing book", description = "Updates an existing book by ID")
     @PutMapping("/{id}")
     public BookDto updateBook(
             @ApiParam("ID of the book to update") @PathVariable Long id,
@@ -65,7 +66,7 @@ public class LibraryController {
         bookService.deleteBook(id);
     }
 
-    @Operation(summary = "Retrieve featured books", description = "Returns a list of featured books in the library as BookDto objects")
+    @Operation(summary = "Retrieve featured books", description = "Returns a list of featured books in the library")
     @GetMapping("/featured")
     public List<BookDto> getFeaturedBooks() {
         return bookService.getFeaturedBooks()
@@ -84,9 +85,23 @@ public class LibraryController {
     }
 
     @Operation(summary = "Get a book description", description = "Get a book's description by its ID")
-    @GetMapping("/description/{category}")
+    @GetMapping("/description/{id}")
     public String getBookDescription(@ApiParam("Category to filter books") @PathVariable Long id) {
         return bookService.getBookDescriptionById(id);
+    }
+
+    @Operation(summary = "Mark book as Featured", description = "Marks a book as Featured using the decorator pattern and facade")
+    @GetMapping("/{id}/mark-featured")
+    public String markAsFeatured(@PathVariable Long id) {
+        LibraryFacade libraryFacade = new LibraryFacade(bookService);
+        return libraryFacade.markBookAsFeatured(id);
+    }
+
+    @Operation(summary = "Mark book as Bestseller", description = "mark a book as Bestseller using decorator and facade")
+    @GetMapping("/{id}/mark-bestseller")
+    public String markAsBestseller(@PathVariable Long id) {
+        LibraryFacade libraryFacade = new LibraryFacade(bookService);
+        return libraryFacade.markBookAsBestseller(id);
     }
 
 }

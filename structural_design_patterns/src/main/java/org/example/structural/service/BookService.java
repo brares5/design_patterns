@@ -63,4 +63,14 @@ public class BookService {
     public String getBookDescriptionById(Long id) {
         return bookRepository.getBookDescription(id);
     }
+
+    public BookDecorator markBookAsFeatured(Long id) {
+        Book book = getBookById(id);
+        return new FeaturedBookDecorator(book);
+    }
+
+    public BookDecorator markBookAsBestseller(Long id) {
+        Book book = getBookById(id);
+        return new BestsellerBookDecorator(book);
+    }
 }

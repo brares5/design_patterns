@@ -21,13 +21,20 @@ public class LibraryFacade {
     }
 
     public List<Book> getBooksByCategory(String category) {
-        // Assuming BookService or BookRepository has a method for this
         return bookService.findBooksByCategory(category);
     }
 
-    public List<Book> getFeaturedBooks() {
-        // Retrieve and filter featured books (using decorators or service logic)
-        return bookService.getFeaturedBooks();
+
+    public String markBookAsFeatured(Long id) {
+        Book book = bookService.getBookById(id);
+        BookDecorator featuredBook = new FeaturedBookDecorator(book);
+        return featuredBook.getDescription();
+    }
+
+    public String markBookAsBestseller(Long id) {
+        Book book = bookService.getBookById(id);
+        BookDecorator bestsellerBook = new BestsellerBookDecorator(book);
+        return bestsellerBook.getDescription();
     }
 
 }
