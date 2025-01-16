@@ -1,9 +1,11 @@
 package org.example.command;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.model.Order;
 import org.example.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Slf4j
 public class PlaceOrderCommand implements OrderCommand {
 
     @Autowired
@@ -18,6 +20,6 @@ public class PlaceOrderCommand implements OrderCommand {
     @Override
     public void execute() {
         orderService.addOrder(order);
-        System.out.println("Order placed successfully: " + order.getId());
+        log.info("Order placed successfully: " + order.getId());
     }
 }

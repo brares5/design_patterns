@@ -23,6 +23,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<Order> createOrder(@RequestBody Order order) {
         Order newOrder = orderService.addOrder(order);
+        orderService.processOrder(newOrder);
         return new ResponseEntity<>(newOrder, HttpStatus.CREATED);
     }
 

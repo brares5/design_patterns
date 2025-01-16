@@ -1,16 +1,18 @@
 package org.example.payment;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-@AllArgsConstructor
+@Slf4j
+@NoArgsConstructor
 public class DebitCardPayment implements PaymentStrategy {
 
-    private final String cardNumber;
 
     @Override
-    public void pay(double amount) {
+    public void pay() {
         if (validateCard()) {
-            System.out.println("Paid $" + amount + " with Debit Card ending in " + cardNumber.substring(cardNumber.length() - 4));
+            log.info("Paid with Debit Card");
         } else {
             throw new RuntimeException("Debit card validation failed. Payment could not be processed.");
         }

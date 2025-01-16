@@ -1,27 +1,40 @@
 package org.example.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.model.Order;
+import org.example.model.Product;
+import org.example.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class InventoryCheckHandler extends OrderValidationHandler {
 
+    private final ProductRepository productRepository;
+
+    @Autowired
+    public InventoryCheckHandler(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
     @Override
     public void validate(Order order) {
-        // Simulate checking inventory stock for each item in the order
-        boolean inStock = checkInventory(order);
+        for (String product : order.getProducts()) {
+            Product existingProduct = productRepository.findByName(product)
+                    .orElseThrow(() -> new RuntimeException("Product " + product + " does not exist."));
 
-        if (inStock) {
-            System.out.println("Inventory check passed for order ID: " + order.getId());
-            super.validate(order); // Proceed to the next validation step if available
-        } else {
-            System.out.println("Inventory check failed for order ID: " + order.getId());
-            throw new RuntimeException("Inventory check failed: some items are out of stock.");
+            if (existingProduct.getStockQuantity() > 0) {
+                existingProduct.decrementStock();
+                productRepository.save(existingProduct);
+                log.info("Stock decremented for product: " + product);
+            } else {
+                throw new RuntimeException("Product " + product + " is out of stock.");
+            }
         }
+
+        log.info("Inventory check passed for order -- " + order.toString());
+        super.validate(order);
     }
 
-    private boolean checkInventory(Order order) {
-        // w will assume that all items are in stock for simplticity
-        return true;
-    }
 }

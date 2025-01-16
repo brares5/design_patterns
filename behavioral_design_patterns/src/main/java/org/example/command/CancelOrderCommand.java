@@ -3,6 +3,9 @@ package org.example.command;
 import org.example.model.Order;
 import org.example.service.OrderService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CancelOrderCommand implements OrderCommand {
 
     private final OrderService orderService;
@@ -16,6 +19,6 @@ public class CancelOrderCommand implements OrderCommand {
     @Override
     public void execute() {
         orderService.deleteOrder(order.getId());
-        System.out.println("Order canceled successfully: " + order.getId());
+        log.info("Order canceled successfully: " + order.getId());
     }
 }
